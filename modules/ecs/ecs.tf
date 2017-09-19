@@ -45,3 +45,23 @@ resource "aws_autoscaling_group" "ecs_asg" {
   }
 
 }
+
+
+resource "aws_ecs_cluster" "ecs" {
+    name = "${var.cluster}"
+}
+
+resource "aws_ecs_service" "ecs_service" {
+  name            = "ecs-deploy"
+  cluster         = "${aws_ecs_cluster.ecs.id}"
+  task_definition = "${aws_ecs_task_definition.ecs_task.arn}"
+  desired_count   = 1
+  iam_role        = "${aws_iam_role.ecs_role.arn}"
+  depends_on      = ["aws_iam_role_policy.ecs_service_role_policy"]
+
+}
+
+resource "aws_ecs_task_definition" "ecs_task" {
+  family                = "registry"
+  container_definitions = "${template_file.ecs_task.rendered}"
+}

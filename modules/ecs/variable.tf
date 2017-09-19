@@ -51,3 +51,14 @@ variable "load_balancers" {
   default     = []
 }
 
+variable "public_subnet_ids" {
+  type        = "list"
+}
+
+variable "ecr_bucket_name" {
+    default = ""
+}
+
+variable "ecr_repo_name" {
+    default = ""
+}
