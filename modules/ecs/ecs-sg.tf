@@ -1,23 +1,3 @@
-resource "aws_security_group" "ecs_sg" {
-    name        = "ecs-sg"
-    description = "Used in ${var.env}
-    vpc_id      = "${var.aws_vpc}
-
-    tags {
-        Env     = "${var.env}"
-        Cluster = "${var.cluster}"
-    }
-}
-
-resource "aws_security_group_rule" "esc_egress" {
-    type              = "egress"
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    cidr_blocks       = ["0.0.0.0/0"]
-    security_group_id = "${aws_security_group.ecs_sg.id}"
-    
-}
 
 
 resource "aws_security_group" "alb-ecs" {
@@ -35,7 +15,7 @@ resource "aws_security_group_rule" "alb-ingress" {
   to_port           = 5601
   protocol          = "TCP"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.alb-esc.id}"
+  security_group_id = "${aws_security_group.alb-ecs.id}"
 }
 
 resource "aws_security_group_rule" "alb-egress" {
@@ -44,12 +24,12 @@ resource "aws_security_group_rule" "alb-egress" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.alb.id}"
+  security_group_id = "${aws_security_group.alb-ecs.id}"
 }
 
 resource "aws_security_group" "ecs_sg" {
     name    = "ecs-sg"
-    vpc_id  = ${var.aws_vpc}
+    vpc_id  = "${var.aws_vpc}"
     egress {
         from_port   = 0
         to_port     = 0
@@ -66,7 +46,7 @@ resource "aws_security_group" "ecs_sg" {
         from_port   = 80
         to_port     = 5601
         protocol    = "tcp"
-        security_group  = "${aws_security_group.alb-esc.id}
+        security_groups  = ["${aws_security_group.alb-ecs.id}"]
     }
 
     tags {

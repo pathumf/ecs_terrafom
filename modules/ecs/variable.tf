@@ -1,22 +1,19 @@
-variable "AWS_REGION" {
-    default = "ap-southeast-2"
+variable "aws_region" {
+    default = ""
 }
 
 variable "aws_vpc" {
-    default = "vpc-65c4f40c"
+    default = ""
 }
 
 variable "env" {
-    default = "perf"
+    default = ""
 }
 
 variable "cluster" {
-    default = "perf-test"
+    default = ""
 }
 
-variable "iam_instance_profile_id" {
-    default  = ""
-}
 
 variable "key_name" {
     default = ""
@@ -42,23 +39,6 @@ variable "desired_capacity" {
     default = ""
 }
 
-variable "private_subnet_ids" {
-  type        = "list"
-}
-
-variable "load_balancers" {
-  type        = "list"
-  default     = []
-}
-
-variable "public_subnet_ids" {
-  type        = "list"
-}
-
-variable "ecr_bucket_name" {
-    default = ""
-}
-
 variable "ecr_repo_name" {
     default = ""
 }
@@ -69,4 +49,8 @@ variable "target_group" {
 
 variable "health_check_path" {
     default = ""
+}
+
+variable "vpc_subnets_id" {
+    type = "list"
 }

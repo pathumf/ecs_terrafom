@@ -16,12 +16,14 @@ resource "aws_alb_target_group" "ecs_target" {
 
 resource "aws_alb" "alb" {
   name            = "ecs-alb"
-  subnets         = "${element(data.aws_subnet_ids.vpc_subnet.ids, count.index)}"
+  subnets         = "${var.vpc_subnets_id}"
   security_groups = ["${aws_security_group.alb-ecs.id}"]
+ 
 
   tags {
     Environment = "${var.env}"
   }
+
 }
 
 resource "aws_alb_listener" "http" {
