@@ -5,13 +5,17 @@ resource "aws_launch_configuration" "ecs_lc" {
     instance_type        = "${var.instance_type}"
     security_groups      = ["${aws_security_group.ecs_sg.id}"]
     user_data            = "${data.template_file.user_data.rendered}"
-    iam_instance_profile = "${var.iam_instance_profile_id}"
+    iam_instance_profile = "${awa_iam_instance_profile.ecs.id}"
     key_name             = "${var.key_name}"
 
     lifecycle {
     create_before_destroy = true
   }
     
+}
+
+data "aws_subnet_ids" "vpc_subnet" {
+    vpc_id  = "${var.aws_vpc}
 }
 
 
@@ -21,9 +25,11 @@ resource "aws_autoscaling_group" "ecs_asg" {
   min_size             = "${var.min_size}"
   desired_capacity     = "${var.desired_capacity}"
   force_delete         = true
+  health_check_grace_period = 300
+  health_check_type = "ELB"
   launch_configuration = "${aws_launch_configuration.ecs_lc.id}"
-  vpc_zone_identifier  = ["${var.private_subnet_ids}"]
-  load_balancers       = ["${var.load_balancers}"]
+  vpc_zone_identifier  = "${element(data.aws_subnet_ids.vpc_subnet.ids, count.index)}"
+  target_group_arns    =  ["${aws_alb_target_group.ecs_target.arn}"]
 
 
   tag {
@@ -57,11 +63,10 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = "${aws_ecs_task_definition.ecs_task.arn}"
   desired_count   = 1
   iam_role        = "${aws_iam_role.ecs_role.arn}"
-  depends_on      = ["aws_iam_role_policy.ecs_service_role_policy"]
 
 }
 
 resource "aws_ecs_task_definition" "ecs_task" {
-  family                = "registry"
+  family                = "ecs_task"
   container_definitions = "${template_file.ecs_task.rendered}"
 }

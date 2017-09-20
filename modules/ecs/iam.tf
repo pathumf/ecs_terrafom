@@ -4,7 +4,7 @@ resource "aws_iam_role" "ecs_role" {
 
 resource "aws_iam_role_policy" "ecs_instance_role_policy" {
   name     = "ecs_instance_role_policy"
-  policy   = "${template_file.ecs_service_role_policy.rendered}"
+  policy   = "${template_file.ecs_instance_role_policy.rendered}"
   role     = "${aws_iam_role.ecs_role.id}"
 }
 

@@ -32,7 +32,7 @@ resource "aws_security_group" "alb-ecs" {
 resource "aws_security_group_rule" "alb-ingress" {
   type              = "ingress"
   from_port         = 80
-  to_port           = 80
+  to_port           = 5601
   protocol          = "TCP"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.alb-esc.id}"
@@ -46,3 +46,32 @@ resource "aws_security_group_rule" "alb-egress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.alb.id}"
 }
+
+resource "aws_security_group" "ecs_sg" {
+    name    = "ecs-sg"
+    vpc_id  = ${var.aws_vpc}
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress{
+        from_port   = 80
+        to_port     = 5601
+        protocol    = "tcp"
+        security_group  = "${aws_security_group.alb-esc.id}
+    }
+
+    tags {
+        Environment    = "${var.env}"
+    }
+}
+
+

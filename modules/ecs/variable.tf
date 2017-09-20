@@ -10,7 +10,7 @@ variable "env" {
     default = "perf"
 }
 
-variable "cluster_name" {
+variable "cluster" {
     default = "perf-test"
 }
 
@@ -60,5 +60,13 @@ variable "ecr_bucket_name" {
 }
 
 variable "ecr_repo_name" {
+    default = ""
+}
+
+variable "target_group" {
+    default = ""
+}
+
+variable "health_check_path" {
     default = ""
 }
