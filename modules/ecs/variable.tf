@@ -54,3 +54,24 @@ variable "health_check_path" {
 variable "vpc_subnets_id" {
     type = "list"
 }
+
+variable "ELASTICSEARCH_URL" {
+    default = ""
+}
+
+variable "ES_PORT" {
+    default = ""
+}
+
+variable "CARBON_HOST"{
+    default = ""
+}
+
+variable "APP_HOST" {
+    default = ""
+}
+
+variable "XPACK_MONITORING_ELASTICSEARCH_URL" {
+    default = ""
+}
+

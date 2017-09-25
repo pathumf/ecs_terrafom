@@ -1,0 +1,27 @@
+[
+    {
+
+    
+    "environment": [
+        {
+            "name": "APP_PORT",
+            "value": "9000"
+        }
+    ],
+    "essential": true,
+    "image": "675228244484.dkr.ecr.us-east-2.amazonaws.com/cakeperf/gatdemo-server:latest",
+    "name": "httpserver",
+    "memory": 500,
+    "cpu": 150,
+    "portMappings": [
+        {
+            "containerPort": 9000,
+            "hostPort": 9000
+        },
+        {
+            "containerPort": 9990,
+            "hostPort": 9990
+        }
+      ]
+    }
+]

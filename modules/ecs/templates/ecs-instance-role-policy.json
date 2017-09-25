@@ -45,7 +45,15 @@
                 "iam:PassRole"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:*"
+            ],
+            "Resource": "*"
         }
+
 
     ]
 }

@@ -11,9 +11,9 @@ resource "aws_security_group" "alb-ecs" {
 
 resource "aws_security_group_rule" "alb-ingress" {
   type              = "ingress"
-  from_port         = 80
-  to_port           = 5601
-  protocol          = "TCP"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.alb-ecs.id}"
 }
@@ -37,15 +37,15 @@ resource "aws_security_group" "ecs_sg" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     ingress {
-        from_port   = 22
-        to_port     = 22
-        protocol    = "tcp"
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
     ingress{
-        from_port   = 80
-        to_port     = 5601
-        protocol    = "tcp"
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
         security_groups  = ["${aws_security_group.alb-ecs.id}"]
     }
 

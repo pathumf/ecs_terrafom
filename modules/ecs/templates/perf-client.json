@@ -1,0 +1,28 @@
+
+[
+    {
+        "environment": [
+            {
+                "name": "APP_HOST",
+                "value": "${APP_HOST}"
+            },
+            {
+                "name": "APP_PORT",
+                "value": "9000"
+            },
+            {
+                "name": "CARBON_HOST",
+                "value": "${CARBON_HOST}"
+            },
+            {
+                "name": "EXTRA_WRITER",
+                "value": "graphite"  
+            }
+        ],
+        "essential": true,
+        "image": "675228244484.dkr.ecr.us-east-2.amazonaws.com/cakeperf/gatdemo-perf:latest",
+        "name": "perf",
+        "memory": 500,
+        "cpu" : 100
+    }
+]
